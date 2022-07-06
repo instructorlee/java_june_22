@@ -5,21 +5,21 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.SchoolOrganizer.models.School;
-import com.example.SchoolOrganizer.repositories.SchoolRepository;
+import com.example.SchoolOrganizer.models.Address;
+import com.example.SchoolOrganizer.repositories.AddressRepository;
 
 @Service
-public class SchoolService {
+public class AddressService {
 	
 	@Autowired
-	private SchoolRepository repository;
+	private AddressRepository repository;
 	
 	
-	public List<School> all() {
+	public List<Address> all() {
 		return this.repository.findAll();
 	}
 	
-	public School create(School item) {
+	public Address create(Address item) {
 		return this.repository.save(item);
 	}
 	
@@ -27,12 +27,11 @@ public class SchoolService {
 		this.repository.deleteById(id);
 	}
 	
-	public School retrieve(Long id) {
+	public Address retrieve(Long id) {
 		return this.repository.findById(id).get();
 	}
 	
-	public School update(School School) {
-		return this.repository.save(School);
+	public Address update(Address Address) {
+		return this.repository.save(Address);
 	}
-	
 }

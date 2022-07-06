@@ -1,93 +1,77 @@
 package com.example.SchoolOrganizer.models;
 
-import javax.persistence.CascadeType;
+import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Column;
-
 @Entity
-@Table(name="schools")
-public class School {
+@Table(name="students")
+public class Student {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Size(min = 3, max = 100)
 	private String name;
+	private int grade;
 	
 	@Column(updatable=false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createdAt;
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
-	
-	@OneToOne(mappedBy="school", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-    private Address address;
     
-    @OneToMany(mappedBy="school", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Student> students;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="school_id") // parent_name_id
+    private School school; // parent 'mappedBy'
 	
-	public List<Student> getStudents() {
-		return students;
+	public School getSchool() {
+		return school;
 	}
-
-	public void setStudents(List<Student> students) {
-		this.students = students;
+	public void setSchool(School school) {
+		this.school = school;
 	}
-
-	public Address getAddress() {
-		return address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-
 	public Date getCreatedAt() {
 		return createdAt;
 	}
-
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
-
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
-
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 	public Long getId() {
 		return id;
 	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
+	public int getGrade() {
+		return grade;
+	}
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
+	
+	public Student() {}
 
-	public School() {}
 }

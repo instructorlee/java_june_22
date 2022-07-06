@@ -16,7 +16,7 @@
 					<c:forEach var="school" items="${schools}">
 						<tr>
 							<td>
-								<a href="school/${school.id}">
+								<a href="/school/${school.id}">
 									<c:out value="${school.name}"/>
 								</a>
 							</td>

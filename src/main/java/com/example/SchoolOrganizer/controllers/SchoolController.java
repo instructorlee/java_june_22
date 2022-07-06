@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.SchoolOrganizer.models.School;
+import com.example.SchoolOrganizer.models.Student;
 import com.example.SchoolOrganizer.services.SchoolService;
+import com.example.SchoolOrganizer.services.StudentService;
 
 @Controller
 @RequestMapping("school")
@@ -29,10 +31,15 @@ public class SchoolController {
 	@Autowired
 	private SchoolService service; // using generic variable names for better reusability
 	
+	@Autowired
+	private StudentService studentService;
+	
 	@GetMapping("")
 	public String home( Model model) {
 		
-		model.addAttribute("schools", this.service.all());
+		List<School> schools = this.service.all();
+		
+		model.addAttribute("schools", schools); // add a breakpoint to this line to look into schools
 		
 		return "schools.jsp";
 	}
@@ -62,7 +69,7 @@ public class SchoolController {
 	}
 	
 	@GetMapping("/{id}")
-	public String ViewItem (
+	public String viewItem (
 			HttpSession session,
 			@PathVariable Long id,
 			Model model
@@ -91,6 +98,7 @@ public class SchoolController {
     public String getUpdateForm(Model model, @PathVariable Long id) {
 			
 			model.addAttribute("school", this.service.retrieve(id));
+			model.addAttribute("students", this.studentService.all());
 			
             return "updateSchool.jsp";
     }
@@ -108,5 +116,43 @@ public class SchoolController {
 		redirectAttributes.addFlashAttribute("message", "School has been updated");
 		
 		return "redirect:/school";
+	}
+	
+	@PostMapping("/add-student/{schoolId}")
+	public String addStudent(
+			@PathVariable Long schoolId,
+			@RequestParam(value="student_id") Long studentId,
+			RedirectAttributes redirectAttributes) {
+		
+		if ( this.studentService.setSchool(schoolId, studentId) ) {
+			redirectAttributes.addFlashAttribute("message", "Student has been added");
+			
+		} else {
+
+			redirectAttributes.addFlashAttribute("message", "Unable to add student");
+		}
+		
+		return String.format("redirect:/school/update/%d", schoolId); // add the ID of the school being updated
+				
+	}
+	
+	@GetMapping("/remove-student/{schoolId}/{studentId}")
+	public String removeStudent(
+			@PathVariable Long schoolId,
+			@PathVariable Long studentId,
+			RedirectAttributes redirectAttributes
+			) {
+		
+		if ( this.studentService.unsetSchool(schoolId, studentId) ) {
+			
+			redirectAttributes.addFlashAttribute("message", "Student has been removed");
+			
+		} else {
+
+			redirectAttributes.addFlashAttribute("message", "Unable to remove student");
+			
+		}
+		
+		return String.format("redirect:/school/update/%d", schoolId); // add the ID of the school being updated
 	}
 }
