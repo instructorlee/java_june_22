@@ -9,6 +9,21 @@
 			</div>
 		</div>
 		
+		
+		<div id="page_header__menu" class="row">
+			<div class="col-12 text-center">
+				<c:choose>
+					<c:when test="${empty sessionScope.user}">
+						<a href="/user/login">Login</a>
+						<a href="/user/register">Register</a>
+					</c:when>
+					<c:otherwise>
+						<a href="/user/logout">Logout</a>
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</div>
+		
 		<div id="page_header__message" class="row">
 			<div class="col-12 text-center">
 				<div id="page_header__message">

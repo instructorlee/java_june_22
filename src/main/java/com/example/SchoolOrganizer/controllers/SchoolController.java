@@ -1,8 +1,6 @@
 package com.example.SchoolOrganizer.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.SchoolOrganizer.models.School;
-import com.example.SchoolOrganizer.models.Student;
 import com.example.SchoolOrganizer.services.SchoolService;
 import com.example.SchoolOrganizer.services.StudentService;
 
