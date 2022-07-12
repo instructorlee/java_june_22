@@ -1,11 +1,11 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:include page="includes/head.jsp" />
+<jsp:include page="/WEB-INF/includes/head.jsp" />
 
 <body>
 	<div class="container-fluid">
 	
-		<jsp:include page="includes/pageHeader.jsp" />
+		<jsp:include page="/WEB-INF/includes/pageHeader.jsp" />
 			
 		<div class="row justify-content-center">
 			<div id="active_area" class="col-7">
@@ -13,7 +13,7 @@
 			</div>
 			
 			<div class="col-7">
-				<h2>Students</h2>
+				<h2>Teachers</h2>
 				<hr>
 			</div>
 			
@@ -21,12 +21,11 @@
 				<table class="table">
 					<thead>
 						<th>Name</th>
-						<th>Grade</th>
 					</thead>
-					<c:forEach var="student" items="${school.students}">
+					<c:forEach var="teacher" items="${school.teachers}">
 						<tr>
-							<td><c:out value="${student.name}"/></td>
-							<td><c:out value="${student.grade}"/></td>
+							<td><c:out value="${teacher.name}"/></td>
+							<td><c:out value="${teacher.grade}"/></td>
 						</tr>
 					</c:forEach>
 				</table>

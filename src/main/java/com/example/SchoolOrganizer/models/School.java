@@ -39,14 +39,16 @@ public class School {
     private Address address;
     
     @OneToMany(mappedBy="school", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Student> students;
+    private List<Teacher> teachers;
 	
-	public List<Student> getStudents() {
-		return students;
+    
+
+	public List<Teacher> getTeachers() {
+		return teachers;
 	}
 
-	public void setStudents(List<Student> students) {
-		this.students = students;
+	public void setTeachers(List<Teacher> teachers) {
+		this.teachers = teachers;
 	}
 
 	public Address getAddress() {

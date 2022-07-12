@@ -16,7 +16,16 @@
 				</p>
 			</div>
 			<div class="col-7">
-				<a href="/school">Continue</a>
+				<c:choose>
+					<c:when test="${empty sessionScope.user}">
+						<a href="/user/login">Login to continue</a>
+					</c:when>
+					<c:otherwise>
+						<a href="/school">Manage schools</a><br/>
+						<a href="/teacher">Manage teachers</a><br/>
+						<a href="/student">Manage students</a><br/>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 	</div>

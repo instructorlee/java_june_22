@@ -1,7 +1,5 @@
 package com.example.SchoolOrganizer.controllers;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -19,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.SchoolOrganizer.models.School;
 import com.example.SchoolOrganizer.services.SchoolService;
-import com.example.SchoolOrganizer.services.StudentService;
+import com.example.SchoolOrganizer.services.TeacherService;
 
 @Controller
 @RequestMapping("school")
@@ -29,36 +27,36 @@ public class SchoolController {
 	private SchoolService service; // using generic variable names for better reusability
 	
 	@Autowired
-	private StudentService studentService;
+	private TeacherService teacherService;
 	
 	@GetMapping("")
-	public String home( Model model) {
+	public String home( Model model, HttpSession session) {
 		
-		List<School> schools = this.service.all();
+		if ( session.getAttribute("user") == null ) return "redirect:/";
 		
-		model.addAttribute("schools", schools); // add a breakpoint to this line to look into schools
+		model.addAttribute("schools", this.service.all()); // add a breakpoint to this line to look into schools
 		
-		return "schools.jsp";
+		return "school/list.jsp";
 	}
 	
 	@GetMapping("/add")
     public String getAddForm(@ModelAttribute("school") School schoool) {
 		
-        return "addSchool.jsp";
+        return "school/add.jsp";
     }
 	
 	@PostMapping("/add")
 	public String add(
-			@Valid @ModelAttribute("School") School School,
+			@Valid @ModelAttribute("school") School school,
 			BindingResult result,
 			RedirectAttributes redirectAttributes,
 			HttpSession session
 			) {
 		
 		// check for form errors
-		if ( result.hasErrors() ) return "addSchool.jsp";
+		if ( result.hasErrors() ) return "school/add.jsp";
 		
-		this.service.create(School);
+		this.service.create(school);
 		
 		redirectAttributes.addFlashAttribute("message", "School has been added");
 		
@@ -74,7 +72,7 @@ public class SchoolController {
 		
 		model.addAttribute("school", this.service.retrieve(id));
 		
-		return "viewSchool.jsp";
+		return "school/view.jsp";
 	}
 
 	
@@ -95,9 +93,9 @@ public class SchoolController {
     public String getUpdateForm(Model model, @PathVariable Long id) {
 			
 			model.addAttribute("school", this.service.retrieve(id));
-			model.addAttribute("students", this.studentService.all());
+			model.addAttribute("teachers", this.teacherService.all());
 			
-            return "updateSchool.jsp";
+            return "school/update.jsp";
     }
 
 	@PostMapping("/update")
@@ -106,7 +104,7 @@ public class SchoolController {
 			BindingResult result,
 			RedirectAttributes redirectAttributes) {
 		
-		if ( result.hasErrors() ) return "addSchool.jsp";
+		if ( result.hasErrors() ) return "school/update.jsp";
 		
 		this.service.update(school);
 		
@@ -115,38 +113,38 @@ public class SchoolController {
 		return "redirect:/school";
 	}
 	
-	@PostMapping("/add-student/{schoolId}")
-	public String addStudent(
+	@PostMapping("/add-teacher/{schoolId}")
+	public String addTeacher(
 			@PathVariable Long schoolId,
-			@RequestParam(value="student_id") Long studentId,
+			@RequestParam(value="teacher_id") Long teacherId,
 			RedirectAttributes redirectAttributes) {
 		
-		if ( this.studentService.setSchool(schoolId, studentId) ) {
-			redirectAttributes.addFlashAttribute("message", "Student has been added");
+		if ( this.teacherService.setSchool(schoolId, teacherId) ) {
+			redirectAttributes.addFlashAttribute("message", "Teacher has been added");
 			
 		} else {
 
-			redirectAttributes.addFlashAttribute("message", "Unable to add student");
+			redirectAttributes.addFlashAttribute("message", "Unable to add teacher");
 		}
 		
 		return String.format("redirect:/school/update/%d", schoolId); // add the ID of the school being updated
 				
 	}
 	
-	@GetMapping("/remove-student/{schoolId}/{studentId}")
-	public String removeStudent(
+	@GetMapping("/remove-teacher/{schoolId}/{teacherId}")
+	public String removeTeacher(
 			@PathVariable Long schoolId,
-			@PathVariable Long studentId,
+			@PathVariable Long teacherId,
 			RedirectAttributes redirectAttributes
 			) {
 		
-		if ( this.studentService.unsetSchool(schoolId, studentId) ) {
+		if ( this.teacherService.unsetSchool(schoolId, teacherId) ) {
 			
-			redirectAttributes.addFlashAttribute("message", "Student has been removed");
+			redirectAttributes.addFlashAttribute("message", "Teacher has been removed");
 			
 		} else {
 
-			redirectAttributes.addFlashAttribute("message", "Unable to remove student");
+			redirectAttributes.addFlashAttribute("message", "Unable to remove teacher");
 			
 		}
 		

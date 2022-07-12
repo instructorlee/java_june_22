@@ -16,19 +16,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name="students")
-public class Student {
+@Table(name="teachers")
+public class Teacher {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	private String name;
-	private int grade;
 	
 	@Column(updatable=false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
@@ -36,50 +34,80 @@ public class Student {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updatedAt;
     
-    @OneToMany(mappedBy="student", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="school_id") // parent_name_id
+    private School school; // parent 'mappedBy'
+    
+    @OneToMany(mappedBy="teacher", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     //@JsonIgnore
     private List<TeacherStudent> teacherStudent;
     
-    
-	public List<TeacherStudent> getTeacherStudent() {
+    public List<TeacherStudent> getTeacherStudent() {
 		return teacherStudent;
 	}
 	public void setTeacherStudent(List<TeacherStudent> teacherStudent) {
 		this.teacherStudent = teacherStudent;
 	}
-	
-	public Date getCreatedAt() {
-		return createdAt;
+
+	public School getSchool() {
+		return school;
 	}
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
+
+	public void setSchool(School school) {
+		this.school = school;
 	}
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
+
+
+
 	public Long getId() {
 		return id;
 	}
+
+
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+
+
 	public String getName() {
 		return name;
 	}
+
+
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getGrade() {
-		return grade;
+
+
+
+	public Date getCreatedAt() {
+		return createdAt;
 	}
-	public void setGrade(int grade) {
-		this.grade = grade;
+
+
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
-	
-	public Student() {}
+
+
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+
+
+	public Teacher() {}
 	
 	@PrePersist
     protected void onCreate(){
@@ -90,5 +118,5 @@ public class Student {
     protected void onUpdate(){
         this.updatedAt = new Date();
     }
-
+    
 }

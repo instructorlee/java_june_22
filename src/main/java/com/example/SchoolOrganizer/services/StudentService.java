@@ -34,30 +34,7 @@ public class StudentService {
 		return this.repository.findById(id).get();
 	}
 	
-	public Student update(Student Student) {
-		return this.repository.save(Student);
-	}
-	
-	public boolean setSchool(Long schoolId, Long studentId) {
-		
-		Student student = this.retrieve(studentId);
-		
-		student.setSchool(this.schoolService.retrieve(schoolId));
-		
-		this.update(student); // don't forget to save!
-		
-		return true;
-	}
-	
-	public boolean unsetSchool(Long schoolId, Long studentId) {
-		
-		Student student = this.retrieve(studentId);
-		
-		student.setSchool(null);
-		
-		this.update(student); // don't forget to save!
-		
-		return true;
-		
+	public Student update(Student student) {
+		return this.repository.save(student);
 	}
 }
