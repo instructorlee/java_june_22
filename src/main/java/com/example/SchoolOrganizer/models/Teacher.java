@@ -18,6 +18,8 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="teachers")
 public class Teacher {
@@ -39,7 +41,7 @@ public class Teacher {
     private School school; // parent 'mappedBy'
     
     @OneToMany(mappedBy="teacher", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-    //@JsonIgnore
+    @JsonIgnore
     private List<TeacherStudent> teacherStudent;
     
     public List<TeacherStudent> getTeacherStudent() {

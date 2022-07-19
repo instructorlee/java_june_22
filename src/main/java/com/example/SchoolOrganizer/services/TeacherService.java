@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.example.SchoolOrganizer.models.Student;
 import com.example.SchoolOrganizer.models.Teacher;
 import com.example.SchoolOrganizer.models.TeacherStudent;
-import com.example.SchoolOrganizer.repositories.SchoolRepository;
 import com.example.SchoolOrganizer.repositories.TeacherRepository;
 
 @Service

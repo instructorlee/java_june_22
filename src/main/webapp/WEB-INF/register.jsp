@@ -19,6 +19,7 @@
 			        </p>
 			        <p>
 			            <form:label path="password">Password:</form:label>
+						<form:errors path="password"/>
 			            <form:password path="password"/>
 			        </p>
 			        <p>
